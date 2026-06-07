@@ -1,18 +1,21 @@
 package org.aasvogel.sudokusolver.model;
 
 public class Row extends Region {
-
-    private final int rowindex;
-
-    protected Row(Page thePage, int index) {
-        super(thePage);
-
-        this.rowindex = index;
+    protected Row(int index) {
+        super(index);
     }
 
+    @Override
+    public String getRegionPosition() {
+        return Integer.toString( getRowIndex() +1);
+    }
 
     @Override
-    public Cell get(int columnIndex) {
-        return page.getCellAt( rowindex, columnIndex);
+    public String getRegionTypeName() {
+        return "Row";
+    }
+
+    public int getRowIndex(){
+        return index;
     }
 }

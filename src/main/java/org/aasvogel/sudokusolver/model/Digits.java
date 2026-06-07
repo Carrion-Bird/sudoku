@@ -1,8 +1,7 @@
 package org.aasvogel.sudokusolver.model;
 
-import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public enum Digits implements Symbol {
@@ -22,7 +21,7 @@ public enum Digits implements Symbol {
         return "" + representaion;
     }
 
-    public static Set<Symbol> getSet() {
-        return Arrays.stream(Digits.values()).collect(Collectors.toSet());
+    public static List<Symbol> getList() {
+        return Arrays.stream(Digits.values()).collect(Collectors.toList());
     }
 }

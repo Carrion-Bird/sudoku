@@ -1,36 +1,28 @@
 package org.aasvogel.sudokusolver.model;
 
+import org.aasvogel.sudokusolver.common.BlockCoordinates;
+import org.aasvogel.sudokusolver.common.Configuration;
+
 public class Block extends Region{
 
-    private final int blockIndex;
+    protected Block(int index) {
+        super(index);
+    }
 
-    protected Block(Page page, int blockIndex) {
-        super(page);
-        this.blockIndex = blockIndex;
+    public BlockCoordinates getBlockCoordinates(){
+        int row = index / Configuration.sizeBase;
+        int col = index % Configuration.sizeBase;
+        return new BlockCoordinates( row, col);
     }
 
     @Override
-    public Cell get(int cellIndex) {
-        int row = determineRow( cellIndex);
-        int column = determineColumn( cellIndex);
-        return page.getCellAt( row, column);
+    public String getRegionTypeName() {
+        return "Block";
     }
 
-    private int determineRow(int cellIndex) {
-        int base = page.getBase();
+    @Override
+    public String getRegionPosition() {
 
-        int rowByBlock = (blockIndex / base) * 3;
-        int rowByCell = cellIndex / base;
-
-        return rowByBlock + rowByCell;
-    }
-
-    private int determineColumn(int cellIndex) {
-        int base = page.getBase();
-
-        int columnByBlock = (blockIndex % base) * 3;
-        int columnByCell = (cellIndex % base);
-
-        return columnByBlock + columnByCell;
+        return getBlockCoordinates().format();
     }
 }

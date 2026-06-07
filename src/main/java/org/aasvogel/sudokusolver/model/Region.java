@@ -8,11 +8,22 @@ import java.util.List;
  */
 public abstract class Region {
 
-    protected final Page page;
+    protected final int index;
+    private List<Cell> cells = new ArrayList<>();
 
-    protected Region(Page page) {
-        this.page = page;
+    protected Region(int index) {
+        this.index = index;
     }
 
-    public abstract Cell get(int index);
+    public void addCell(Cell cell){
+
+        cells.add( cell);
+    }
+
+    public List<Cell> getCells() {
+        return cells;
+    }
+
+    public abstract String getRegionTypeName();
+    public abstract String getRegionPosition();
 }
