@@ -17,7 +17,7 @@ public class RuleCoordinator implements Rule{
 
     public RuleCoordinator() {
         rules.add( new OnlyPossibleSymbol());
-
+        rules.add( new OnlyPlaceToPutThisSymbol());
         rules.sort( Comparator.comparing( WeightedRule::getDifficulty));
     }
 

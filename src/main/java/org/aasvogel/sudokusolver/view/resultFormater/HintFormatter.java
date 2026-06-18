@@ -15,7 +15,7 @@ public class HintFormatter {
     }
 
     private static String formatHint(Hint hint) {
-        return "Rule 'OnlyPossibleSymbol'  has found something:\n"
+        return "Rule "+ hint.getRule().getClass().getName() + "  has found something:\n"
                 + "Cell: " + hint.getTargetCell() + " Symbol: " + hint.getSymbol().getRepresentation()
                 + "\nDifficulty: " + hint.getRule().getDifficulty();
     }

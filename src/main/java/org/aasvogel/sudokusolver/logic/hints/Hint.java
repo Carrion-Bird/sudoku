@@ -14,12 +14,12 @@ public class Hint {
     private Symbol symbol;
     private WeightedRule rule;
 
-    static Optional<Hint> withoutInclusions(CellCoordinates coordinates, Symbol symbol, WeightedRule rule){
+    static Hint withoutInclusions(CellCoordinates coordinates, Symbol symbol, WeightedRule rule){
         Hint hint = new Hint();
         hint.setTargetCell( coordinates);
         hint.setSymbol( symbol);
         hint.setRule( rule);
-        return Optional.of( hint);
+        return hint;
     }
 
     public CellCoordinates getTargetCell() {

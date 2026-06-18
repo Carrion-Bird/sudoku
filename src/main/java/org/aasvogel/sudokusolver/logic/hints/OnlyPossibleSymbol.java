@@ -25,8 +25,8 @@ public class OnlyPossibleSymbol implements WeightedRule {
                     throw new IllegalStateException("Unsolvable!");
                 } else if (possibleSymbols.size() == 1) {
 
-                    return Hint.withoutInclusions(cell.getCoordinates(),
-                            possibleSymbols.iterator().next(), this);
+                    return Optional.of( Hint.withoutInclusions(cell.getCoordinates(),
+                            possibleSymbols.iterator().next(), this));
                 }
             }
         }
