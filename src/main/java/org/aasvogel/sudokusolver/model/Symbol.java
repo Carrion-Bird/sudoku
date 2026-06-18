@@ -10,11 +10,11 @@ public interface Symbol {
     String getRepresentation();
 
     static Optional<Symbol> fromText(String text) {
-        for (Symbol symbol : Configuration.symbols) {
+        for (Symbol symbol : Configuration.getAllSymbols()) {
             if (text.equals(symbol.getRepresentation()))
                 return Optional.of( symbol);
         }
-        Logger.getLogger( Symbol.class.getName()).warning( "Representation not found, text: " + text);
+        Logger.getLogger( Symbol.class.getName()).info("Representation not found, text: " + text);
 
         return Optional.empty();
     }

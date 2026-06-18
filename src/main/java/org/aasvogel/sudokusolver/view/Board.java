@@ -41,16 +41,16 @@ public class Board extends JPanel {
         }
     }
 
-    public Cell getCellAt(int rowIndex, int columnIndex) {
+    public Cell getCellAt(CellCoordinates coordinates) {
 
         for (Component component : getComponents()) {
             if (component instanceof Cell cell) {
-                if (cell.getCoordinates().getRow() == rowIndex && cell.getCoordinates().getCol() == columnIndex)
+                if (cell.getCoordinates().equals( coordinates))
                     return cell;
             }
         }
 
-        throw new IllegalArgumentException("Cell not found: " + rowIndex + ", " + columnIndex + ".");
+        throw new IllegalArgumentException("Cell not found: " + coordinates + ".");
     }
 
     public void setFocusedCell(Cell focusedCell) {

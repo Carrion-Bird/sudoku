@@ -14,8 +14,6 @@ import java.util.stream.Collectors;
 public class ValidityChecker {
 
     public ValidityResult check(Page model) {
-
-
         try {
             checkRegions(model.getRows());
             checkRegions(model.getColumns());

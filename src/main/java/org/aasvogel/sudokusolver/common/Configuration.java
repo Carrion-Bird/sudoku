@@ -5,6 +5,7 @@ import org.aasvogel.sudokusolver.model.Symbol;
 
 import java.awt.*;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,11 +14,10 @@ public class Configuration {
 
     public static int sizeBase = 3;
 
-    public static List<Symbol> symbols = Digits.getList();
+    private static List<Symbol> symbols = Digits.getList();
     public static Color highlightBlock = new Color(245, 245, 235);
     public static Color highlightStraight = new Color(245, 235, 245);
-    public static Color highlightTwo = new Color(235, 215, 235);
-    public static Color highlightAll = new Color(225, 205, 215);
+    public static Color highlightAdditionalCell = new Color( 235, 245, 245);
     public static Color highlightCell = new Color(205, 205, 205);
 
     static {
@@ -39,6 +39,9 @@ public class Configuration {
         }
     }
 
-    private Configuration() {
+    public static Set<Symbol> getAllSymbols(){
+        return Set.copyOf( symbols);
     }
+
+    private Configuration() {}
 }

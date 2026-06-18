@@ -17,6 +17,7 @@ public class Cell extends JComponent {
     private boolean columnHighlighted = false;
     private boolean blockHighlighted = false;
     private boolean cellHighlighted = false;
+    private boolean cellSecondaryHighlight = false;
 
     private final org.aasvogel.sudokusolver.model.Cell modelCell;
 
@@ -31,7 +32,8 @@ public class Cell extends JComponent {
         rowHighlighted = ((Integer) coordinates.getRow()).equals( highlights.getRow());
         columnHighlighted = ((Integer) coordinates.getCol()).equals( highlights.getCol());
         blockHighlighted = coordinates.getCorrespondingBlock().equals( highlights.getBlock());
-        cellHighlighted = highlights.getCells().contains( coordinates);
+        cellHighlighted = coordinates.equals( highlights.getCell());
+        cellSecondaryHighlight = highlights.getAdditionalCells().contains( coordinates);
         repaint();
     }
 
@@ -76,13 +78,11 @@ public class Cell extends JComponent {
     }
 
     private void paintBackground(Graphics2D g2) {
-        Color bg; // FIXME: highlight row or column or block or several coordinates
+        Color bg;
         if (cellHighlighted)
             bg = Configuration.highlightCell;
-        else if (rowHighlighted && columnHighlighted && blockHighlighted)
-            bg = Configuration.highlightAll;
-        else if (rowHighlighted && columnHighlighted)
-            bg = Configuration.highlightTwo;
+        else if (cellSecondaryHighlight)
+            bg = Configuration.highlightAdditionalCell;
         else if (rowHighlighted || columnHighlighted)
             bg = Configuration.highlightStraight;
         else if (blockHighlighted)
@@ -120,7 +120,7 @@ public class Cell extends JComponent {
 
         int position = -1;
 
-        for (Symbol symbol : Configuration.symbols) {
+        for (Symbol symbol : Configuration.getAllSymbols()) {
             position++;
 
             if (!penciled.contains(symbol)) {

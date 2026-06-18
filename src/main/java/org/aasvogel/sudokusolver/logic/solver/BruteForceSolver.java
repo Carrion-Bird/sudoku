@@ -36,7 +36,7 @@ public class BruteForceSolver implements Solver{
         else {
             Set<Page> possibilities = new HashSet<>();
 
-            for (Symbol possibleSymbol : Configuration.symbols) {
+            for (Symbol possibleSymbol : Configuration.getAllSymbols()) {
                 Page newVariant = page.getCopy();
 
                 newVariant.getCellAt( currentCoordinates).setValue( possibleSymbol);

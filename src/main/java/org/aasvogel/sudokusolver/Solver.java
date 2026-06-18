@@ -2,6 +2,8 @@ package org.aasvogel.sudokusolver;
 
 import org.aasvogel.sudokusolver.common.CellCoordinates;
 import org.aasvogel.sudokusolver.common.Configuration;
+import org.aasvogel.sudokusolver.logic.hints.Hint;
+import org.aasvogel.sudokusolver.logic.hints.RuleCoordinator;
 import org.aasvogel.sudokusolver.logic.solvability.SolvabilityChecker;
 import org.aasvogel.sudokusolver.logic.solvability.SolvabilityResult;
 import org.aasvogel.sudokusolver.logic.solver.BruteForceSolver;
@@ -13,12 +15,14 @@ import org.aasvogel.sudokusolver.view.Cell;
 import org.aasvogel.sudokusolver.view.CellListener;
 import org.aasvogel.sudokusolver.view.Highlights;
 import org.aasvogel.sudokusolver.view.resultFormater.CorrectnessResultFormater;
+import org.aasvogel.sudokusolver.view.resultFormater.HintFormatter;
 import org.aasvogel.sudokusolver.view.resultFormater.SolvabilityResultFormater;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Optional;
 
 public class Solver {
 
@@ -97,7 +101,17 @@ public class Solver {
     }
 
     private void getHint(ActionEvent actionEvent) {
-        // TODO :-)
+        RuleCoordinator rules = new RuleCoordinator();
+        Optional<Hint> hintOpt = rules.check(model);
+
+        String text = HintFormatter.format(hintOpt);
+        hintsPane.setText( text);
+        if (hintOpt.isPresent()) {
+            Hint hint = hintOpt.get();
+            Cell cell = board.getCellAt(hint.getTargetCell());
+            board.highlight(Highlights.fromHint(hint));
+            board.setFocusedCell( cell);
+        }
     }
 
     private void checkIfSolvable(ActionEvent actionEvent) {
@@ -140,13 +154,4 @@ public class Solver {
         cell.addMouseListener( cellListener );
         return cell;
     }
-
-//    private void readCellAt(int rowIndex, int columnIndex) {
-//        SudokuCellComponent viewCell = getCellAt(rowIndex, columnIndex);
-//        String text = viewCell.getText();
-//        Symbol symbol = Symbol.fromText(text);
-//
-//        Cell modelCell = page.getCellAt(rowIndex, columnIndex);
-//
-//    }
 }

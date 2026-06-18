@@ -1,13 +1,13 @@
 package org.aasvogel.sudokusolver.model;
 
-import org.aasvogel.sudokusolver.common.Configuration;
 import org.aasvogel.sudokusolver.common.CellCoordinates;
+import org.aasvogel.sudokusolver.common.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class Page {
+public class Page{
 
     private final int size;
 
@@ -78,6 +78,10 @@ public class Page {
         target.setPenciled(Set.copyOf( source.getPenciled()));
     }
 
+    List<Cell> getCells()
+    {
+        return cells;
+    }
 
     public Page getCopy() {
         Page target = new Page();
