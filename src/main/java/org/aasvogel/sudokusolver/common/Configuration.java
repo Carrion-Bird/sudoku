@@ -18,6 +18,7 @@ public class Configuration {
     public static Color highlightStraight = new Color(245, 235, 245);
     public static Color highlightTwo = new Color(235, 215, 235);
     public static Color highlightAll = new Color(225, 205, 215);
+    public static Color highlightCell = new Color(205, 205, 205);
 
     static {
         setDebugLogging();

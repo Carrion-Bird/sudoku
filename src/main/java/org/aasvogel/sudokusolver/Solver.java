@@ -1,16 +1,17 @@
 package org.aasvogel.sudokusolver;
 
-import org.aasvogel.sudokusolver.common.Configuration;
 import org.aasvogel.sudokusolver.common.CellCoordinates;
-import org.aasvogel.sudokusolver.logic.CheckResult;
-import org.aasvogel.sudokusolver.logic.ValidityChecker;
+import org.aasvogel.sudokusolver.common.Configuration;
+import org.aasvogel.sudokusolver.logic.validity.ValidityChecker;
+import org.aasvogel.sudokusolver.logic.validity.ValidityResult;
 import org.aasvogel.sudokusolver.model.Digits;
 import org.aasvogel.sudokusolver.model.Page;
 import org.aasvogel.sudokusolver.model.Symbol;
 import org.aasvogel.sudokusolver.view.Board;
 import org.aasvogel.sudokusolver.view.Cell;
 import org.aasvogel.sudokusolver.view.CellListener;
-import org.aasvogel.sudokusolver.view.CheckResultFormater;
+import org.aasvogel.sudokusolver.view.Highlights;
+import org.aasvogel.sudokusolver.view.resultFormater.CorrectnessResultFormater;
 
 import javax.swing.*;
 import java.awt.*;
@@ -105,10 +106,10 @@ public class Solver {
 
     private void checkIfValid(ActionEvent actionEvent) {
 
-        CheckResult result = checker.check( model);
+        ValidityResult result = checker.check( model);
 
-        hintsPane.setText( CheckResultFormater.format( result));
-        // FIXME! Better Highlighting!
+        hintsPane.setText( CorrectnessResultFormater.format( result));
+        board.highlight(Highlights.multipleCells(result.getCellsInvolved()));
     }
 
     private Cell createCell(int rowIndex, int columnIndex) {

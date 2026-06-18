@@ -16,6 +16,7 @@ public class Cell extends JComponent {
     private boolean rowHighlighted = false;
     private boolean columnHighlighted = false;
     private boolean blockHighlighted = false;
+    private boolean cellHighlighted = false;
 
     private final org.aasvogel.sudokusolver.model.Cell modelCell;
 
@@ -26,11 +27,11 @@ public class Cell extends JComponent {
         this.coordinates = coordinates;
     }
 
-    public void setHighlighted(CellCoordinates highlightCoordinates) {
-        rowHighlighted = coordinates.getRow() == highlightCoordinates.getRow();
-        columnHighlighted = coordinates.getCol() == highlightCoordinates.getCol();
-        blockHighlighted = (coordinates.getRow() / 3) == (highlightCoordinates.getRow() / 3) &&
-                (coordinates.getCol() / 3) == (highlightCoordinates.getCol() / 3);
+    public void setHighlighted(Highlights highlights) {
+        rowHighlighted = ((Integer) coordinates.getRow()).equals( highlights.getRow());
+        columnHighlighted = ((Integer) coordinates.getCol()).equals( highlights.getCol());
+        blockHighlighted = coordinates.getCorrespondingBlock().equals( highlights.getBlock());
+        cellHighlighted = highlights.getCells().contains( coordinates);
         repaint();
     }
 
@@ -76,7 +77,9 @@ public class Cell extends JComponent {
 
     private void paintBackground(Graphics2D g2) {
         Color bg; // FIXME: highlight row or column or block or several coordinates
-        if (rowHighlighted && columnHighlighted && blockHighlighted)
+        if (cellHighlighted)
+            bg = Configuration.highlightCell;
+        else if (rowHighlighted && columnHighlighted && blockHighlighted)
             bg = Configuration.highlightAll;
         else if (rowHighlighted && columnHighlighted)
             bg = Configuration.highlightTwo;

@@ -1,7 +1,7 @@
 package org.aasvogel.sudokusolver.view;
 
-import org.aasvogel.sudokusolver.common.Configuration;
 import org.aasvogel.sudokusolver.common.CellCoordinates;
+import org.aasvogel.sudokusolver.common.Configuration;
 import org.aasvogel.sudokusolver.model.Symbol;
 
 import javax.swing.*;
@@ -33,10 +33,10 @@ public class Board extends JPanel {
         focusedCell.setValue(symbol);
     }
 
-    public void highlight(CellCoordinates cellCoordinates) {
+    public void highlight(Highlights highlights) {
         for (Component component : getComponents()) {
             if (component instanceof Cell cell) {
-                cell.setHighlighted(cellCoordinates);
+                cell.setHighlighted(highlights);
             }
         }
     }
@@ -55,7 +55,8 @@ public class Board extends JPanel {
 
     public void setFocusedCell(Cell focusedCell) {
         this.focusedCell = focusedCell;
-        highlight(focusedCell.getCoordinates());
+
+        highlight(Highlights.singleCell(focusedCell.getCoordinates()));
     }
 
     @Override
@@ -98,12 +99,12 @@ public class Board extends JPanel {
 
         @Override
         public void keyTyped(KeyEvent e) {
+            // TODO: multi-char-Symbols?
             char keyChar = e.getKeyChar();
             LOG.fine("Input: " + keyChar);
 
             var symbol = Symbol.fromText(Character.toString(keyChar));
             symbol.ifPresent(Board.this::handleInput);
-            // TODO: multi-char-Symbols?
         }
 
         @Override

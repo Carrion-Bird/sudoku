@@ -1,4 +1,4 @@
-package org.aasvogel.sudokusolver.logic;
+package org.aasvogel.sudokusolver.logic.validity;
 
 import org.aasvogel.sudokusolver.model.Cell;
 import org.aasvogel.sudokusolver.model.Page;
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class ValidityChecker {
 
-    public CheckResult check(Page model) {
+    public ValidityResult check(Page model) {
 
 
         try {
@@ -22,10 +22,10 @@ public class ValidityChecker {
             checkRegions(model.getBlocks());
         } catch (ValidityFailed e) {
             var coordinates = e.cells.stream().map(Cell::getCoordinates).toList();
-            return CheckResult.invalid( coordinates, e.region, e.symbol );
+            return ValidityResult.invalid( coordinates, e.region, e.symbol );
         }
 
-        return CheckResult.valid();
+        return ValidityResult.valid();
     }
 
     private void checkRegions(List<? extends Region> regions) throws ValidityFailed {
