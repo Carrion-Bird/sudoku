@@ -2,29 +2,30 @@ package org.aasvogel.sudokusolver;
 
 import org.aasvogel.sudokusolver.common.CellCoordinates;
 import org.aasvogel.sudokusolver.common.Configuration;
+import org.aasvogel.sudokusolver.logic.solvability.SolvabilityChecker;
+import org.aasvogel.sudokusolver.logic.solvability.SolvabilityResult;
+import org.aasvogel.sudokusolver.logic.solver.BruteForceSolver;
 import org.aasvogel.sudokusolver.logic.validity.ValidityChecker;
 import org.aasvogel.sudokusolver.logic.validity.ValidityResult;
-import org.aasvogel.sudokusolver.model.Digits;
 import org.aasvogel.sudokusolver.model.Page;
-import org.aasvogel.sudokusolver.model.Symbol;
 import org.aasvogel.sudokusolver.view.Board;
 import org.aasvogel.sudokusolver.view.Cell;
 import org.aasvogel.sudokusolver.view.CellListener;
 import org.aasvogel.sudokusolver.view.Highlights;
 import org.aasvogel.sudokusolver.view.resultFormater.CorrectnessResultFormater;
+import org.aasvogel.sudokusolver.view.resultFormater.SolvabilityResultFormater;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.HashSet;
-import java.util.Set;
+import java.awt.event.ActionListener;
 
 public class Solver {
 
+    public static final Dimension PREFERED_BUTTONSIZE = new Dimension(60, 20);
     private JTextArea hintsPane;
     private Page model;
     private Board board;
-    private ValidityChecker checker = new ValidityChecker();
 
     public static void main(String[] args) {
 
@@ -45,10 +46,6 @@ public class Solver {
         mainPanel.setLayout(new GridLayout(1, 2));
 
         fillMainPanel(mainPanel);
-
-        Set<Symbol> set = new HashSet<>(Configuration.symbols);
-        board.getCellAt(1, 2).setpenciled( set);
-        board.getCellAt(2, 1).setValue( Digits.FIVE);
 
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -82,30 +79,54 @@ public class Solver {
     private Component constructHints() {
         JPanel rightPanel = new JPanel(new BorderLayout());
 
-        hintsPane = new JTextArea(getExampleText());
+        hintsPane = new JTextArea("waiting for input");
         rightPanel.add(hintsPane);
         rightPanel.add(getButtonsPanel(), BorderLayout.SOUTH);
         return rightPanel;
     }
 
     private Component getButtonsPanel() {
-        JPanel buttonPanel = new JPanel(new GridLayout(1, 2));
-        Dimension buttonSize = new Dimension(60, 20);
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 3));
 
-        JButton checkButton = new JButton("Check");
-        checkButton.setPreferredSize(buttonSize);
-        checkButton.addActionListener( this::checkIfValid);
-        buttonPanel.add(checkButton);
-        JButton hintsButton = new JButton("Get hint");
-        hintsButton.setPreferredSize(buttonSize);
-//        hintsButton.addActionListener();
-        buttonPanel.add(hintsButton);
+        addButton("Check if valid", this::checkIfValid, buttonPanel);
+        addButton("Check if solvable", this::checkIfSolvable, buttonPanel);
+        addButton("Solve", this::solve, buttonPanel);
+        addButton("Get hint", this::getHint, buttonPanel);
 
         return buttonPanel;
     }
 
-    private void checkIfValid(ActionEvent actionEvent) {
+    private void getHint(ActionEvent actionEvent) {
+        // TODO :-)
+    }
 
+    private void checkIfSolvable(ActionEvent actionEvent) {
+        SolvabilityChecker checker = new SolvabilityChecker(new BruteForceSolver());
+
+        SolvabilityResult result = checker.isSolvable(model);
+        String formatedResult = SolvabilityResultFormater.format(result);
+        hintsPane.setText( formatedResult);
+    }
+
+    private void addButton(String text, ActionListener action, JPanel buttonPanel) {
+        JButton solveButton = new JButton(text);
+        solveButton.setPreferredSize(PREFERED_BUTTONSIZE);
+        solveButton.addActionListener( action);
+        buttonPanel.add(solveButton);
+    }
+
+    private void solve(ActionEvent actionEvent) {
+//        BruteForce bfSolver = new BruteForce();
+//
+//        Set<Page> solutions = bfSolver.getSollutions(model);
+//        hintsPane.setText( "Number of possible solutions: " + solutions.size() + ".");
+//        if (!solutions.isEmpty())
+
+
+    }
+
+    private void checkIfValid(ActionEvent actionEvent) {
+        ValidityChecker checker = new ValidityChecker();
         ValidityResult result = checker.check( model);
 
         hintsPane.setText( CorrectnessResultFormater.format( result));
@@ -114,7 +135,7 @@ public class Solver {
 
     private Cell createCell(int rowIndex, int columnIndex) {
         CellCoordinates coordinates = new CellCoordinates(rowIndex, columnIndex);
-        Cell cell = new Cell(coordinates, model.getCellAt( rowIndex, columnIndex));
+        Cell cell = new Cell(coordinates, model.getCellAt( coordinates));
         CellListener cellListener = new CellListener(board, cell);
         cell.addMouseListener( cellListener );
         return cell;
@@ -128,20 +149,4 @@ public class Solver {
 //        Cell modelCell = page.getCellAt(rowIndex, columnIndex);
 //
 //    }
-
-
-    private String getExampleText() {
-        return """
-                TODO
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                when an unknown printer took a galley of type and scrambled it to make a type
-                specimen book. It has survived not only five centuries, but also the leap into
-                electronic typesetting, remaining essentially unchanged. It was popularised
-                in the 1960s with the release of Letraset sheets containing Lorem Ipsum
-                passages, and more recently with desktop publishing software like Aldus
-                PageMaker including versions of Lorem Ipsum.
-                """;
-    }
-
 }

@@ -10,7 +10,7 @@ import java.util.Set;
 public class ValidityResult {
 
     private final ResultType type;
-    private Set<CellCoordinates> cellsInvolved;
+    private Set<CellCoordinates> cellsInvolved = Set.of();
     private Region regionInvolved;
     private Symbol symbolInvolved;
 

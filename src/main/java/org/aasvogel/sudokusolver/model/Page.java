@@ -5,12 +5,13 @@ import org.aasvogel.sudokusolver.common.CellCoordinates;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class Page {
 
     private final int size;
 
-    private List<Cell> cells = new ArrayList<>(); // TODO necessary?
+    private List<Cell> cells = new ArrayList<>();
 
     private List<Column> columns;
     private List<Row> rows;
@@ -67,9 +68,22 @@ public class Page {
         return blocks;
     }
 
-    public Cell getCellAt(int rowIndex, int columnIndex) {
-        return cells.get(rowIndex * size + columnIndex);
+    public Cell getCellAt(CellCoordinates coordinates) {
+        return cells.get(coordinates.getRow() * size + coordinates.getCol());
+    }
+
+    private void copyCell(Cell source){
+        Cell target = getCellAt(source.getCoordinates());
+        source.getValue().ifPresent( target::setValue);
+        target.setPenciled(Set.copyOf( source.getPenciled()));
     }
 
 
+    public Page getCopy() {
+        Page target = new Page();
+
+        cells.forEach(target::copyCell);
+
+        return target;
+    }
 }

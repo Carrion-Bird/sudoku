@@ -23,7 +23,7 @@ public class Highlights {
 
     public static Highlights multipleCells( Set<CellCoordinates> coordinates){
         Highlights result = new Highlights();
-        result.cells = coordinates;
+        result.cells = Set.copyOf( coordinates);
         return result;
     }
 
@@ -41,5 +41,8 @@ public class Highlights {
 
     public BlockCoordinates getBlock() {
         return block;
+    }
+
+    private Highlights() {
     }
 }
